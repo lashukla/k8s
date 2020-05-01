@@ -1,0 +1,26 @@
+#Pod with a busybox container.
+#Container Image: busy, livenessProbe, and emptyDir volumes mounted on /data/demo in container
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "busybox"
+  labels:
+    type: "dev"
+    app: "busybox"
+spec:
+  containers:
+  - image: busybox
+    name: "busybox"
+    command: ["sh", "-c", "sleep 1h"]
+    volumeMounts:
+    - name: busyvol
+      mountPath: /data/demo
+    livenessProbe:
+      exec:
+        command:
+        - date
+      initialDelaySeconds: 5
+      periodSeconds: 5  
+  volumes:
+  - name: busyvol
+    emptyDir: {}
