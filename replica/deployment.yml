@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+
+#kubectl rollout status deployment.v1.apps/nginx-deployment
+#Updating the image to 1.16.1
+#kubectl --record deployment.apps/nginx-deployment set image deployment.v1.apps/nginx-deployment nginx=nginx:1.16.1
+#or
+#kubectl set image deployment/nginx-deployment nginx=nginx:1.16.1 --record
+#History
+#kubectl rollout history deployment.v1.apps/nginx-deployments
+#Rolling back
+#kubectl rollout undo deployment.v1.apps/nginx-deployment
+#Scaling
+#kubectl scale deployment.v1.apps/nginx-deployment --replicas=10
+#Autoscaling
+#kubectl autoscale deployment.v1.apps/nginx-deployment --min=10 --max=15 --cpu-percent=80

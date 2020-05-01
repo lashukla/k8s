@@ -1,0 +1,13 @@
+##Autoscaling replicaset
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: frontend-scaler
+spec:
+  # Reference ReplicaSet and resource utilization for autoscaling
+  scaleTargetRef:
+    kind: ReplicaSet
+    name: frontend
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
