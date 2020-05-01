@@ -1,0 +1,23 @@
+##Sevice created on ../replica/deployment.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    app: facebook
+    tier: web
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 80
+  type: NodePort
+  topologyKeys:
+  # Use in routing the traffic to endpoint
+  # https://kubernetes.io/docs/concepts/services-networking/service-topology/
+  - "kubernetes.io/hostname"
+  - "topology.kubernetes.io/zone"
+  - "topology.kubernetes.io/region"
+  - "*"
