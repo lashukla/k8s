@@ -1,0 +1,53 @@
+###Create PV
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: task-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 512Mi
+  accessModes:
+  - ReadWriteOnce
+  hostPath:
+    path: "/tmp/data"
+    
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: 
+  name: task-pv-claim
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 128Mi
+  accessModes:
+  - ReadWriteOnce
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: podwithpvc
+  labels:
+    type: local
+spec:
+  containers:
+  - name: podwithpvc
+    image: nginx
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+    - name: pvc-volume
+      mountPath: /tmp/data
+    ports:
+    - containerPort: 80
+      name: nginx-port
+  volumes:
+  - name: pvc-volume
+    persistentVolumeClaim:
+      claimName: task-pv-claim

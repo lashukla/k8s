@@ -1,0 +1,9 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: test-ingress
+spec:
+  backend:
+    ##Sevice created on ../services/service.yml
+    serviceName: nginx
+    servicePort: 80
